@@ -1,0 +1,69 @@
+<!doctype html>
+
+<div id="grid"></div>
+<button id="next">Next generation</button>
+
+<script>
+    let n = 15, m = 15;
+    let gridNode = document.querySelector("#grid");
+    let checkBoxes = [];
+    for (let i = 0; i < n; ++i) {
+        for (let j = 0; j < m; ++j) {
+            let box = document.createElement("input");
+            box.type = "checkbox";
+            gridNode.appendChild(box);
+            checkBoxes.push(box);
+        }
+        gridNode.appendChild(document.createElement("br"));
+    }
+
+    function gridFromCheckboxes() {
+        return checkBoxes.map(box => box.checked);
+    }
+    function checkboxesFromGrid(grid) {
+        grid.forEach((value, i) => checkBoxes[i].checked = value);
+    }
+    function genGrid() {
+        let res = [];
+        for (let i = 0; i < n * m; ++i)
+            res.push(Math.random() < 0.6);
+        return res;
+    }
+    checkboxesFromGrid(genGrid());
+    function ans(grid, x, y) {
+        let cnt = 0;
+        for (let i = Math.max(0, y - 1); i <= Math.min(m - 1, y + 1); ++i)
+            for (let j = Math.max(0, x - 1); j <= Math.min(n - 1, x + 1); ++j)
+                if ((i != y || j != x) && grid[j + i * n])
+                    ++cnt;
+        return cnt;
+    }
+    function nextGen(grid) {
+        let newGrid = new Array(n * m);
+        for (let y = 0; y < m; ++y)
+            for (let x = 0; x < n; ++x) {
+                let vecini = ans(grid, x, y);
+                let offset = x+ y*n;
+                if(vecini<2 || vecini>3)
+                    newGrid[offset]=false;
+                else if(vecini==2)
+                    newGrid[offset]=grid[offset];
+                else
+                    newGrid[offset]=true;
+            }
+        return newGrid;
+    }
+    let playing=null;
+    function turn(){
+        checkboxesFromGrid(nextGen(gridFromCheckboxes()));
+    }
+    document.querySelector("#next").addEventListener("click", ()=>{
+        if(playing){
+            clearInterval(playing);
+            playing=null;
+        }
+        else{
+            playing=setInterval(turn, 1000);
+        }
+    });
+</script>

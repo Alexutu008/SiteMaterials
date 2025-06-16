@@ -1,0 +1,21 @@
+<!doctype html>
+
+<textarea id="code">return "hi";</textarea>
+<button id="button">Run</button>
+<pre id="output"></pre>
+
+<script>
+  // Your code here.
+  document.querySelector("#button").addEventListener("click", ()=> {
+    let code=document.querySelector("#code").value;
+    let outNode = document.querySelector("#output");
+    let res= new Function(code);
+    try{
+      let res= Function(code)();
+      let textNode = document.createTextNode(String(res + "\n+-+-+-+-+-+-+-+-+-+\n"));
+      outNode.appendChild(textNode);
+    } catch(e){
+      outNode.innerText = "Error: " + e;
+    }
+  });
+</script>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Test</title>
+</head>
+
+<body>
+    <h1>Testing alert</h1>
+    <script>alert("hello!");</script>
+    <button onclick="alert('Boom!');">DO NOT PRESS</button>
+    <p>My ostrich Gertrude:</p>
+    <p><img id="gertrude" src="img/ostrich.png"></p>
+    <script>
+        let ostrich = document.getElementById("gertrude");
+        alert(ostrich.src);
+    </script>
+
+    <blockquote id="quote">
+        No book can ever be finished. While working on it we learn
+        just enough to find it immature the moment we turn away
+        from it.
+    </blockquote>
+    <script>
+        function elt(type, ...children) {
+            let node = document.createElement(type);
+            for (let child of children) {
+                if (typeof child != "string") node.appendChild(child);
+                else node.appendChild(document.createTextNode(child));
+            }
+            return node;
+        }
+        document.getElementById("quote").appendChild(
+            elt("footer", "—",
+                elt("strong", "Karl Popper"),
+                ", preface to the second edition of ",
+                elt("em", "The Open Society and Its Enemies"),
+                ", 1950"));
+    </script>
+
+    <br><br><br><br><br>
+
+
+    <p data-classified="secret">The launch code is 00000000.</p>
+    <p data-classified="unclassified">I have two feet.</p>
+    <script>
+        let paras = document.body.getElementsByTagName("p");
+        for (let para of Array.from(paras)) {
+            if (para.getAttribute("data-classified") == "secret") {
+                para.remove();
+            }
+        }
+    </script>
+</body>
+
+</html>
